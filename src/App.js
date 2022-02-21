@@ -1,25 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import react, {useEffect, useState} from 'react';
+
+import {Header} from './Components/header';
+import {Converter} from './Components/converter';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    const [currencyObject, setCurrencyObject] = useState(null)
+    useEffect(() =>{
+        fetch(`http://api.currencylayer.com/live?access_key=fb124bf1648f324fad0c98de960ab24b`)
+            .then (async response => {
+                const result = await response.json()
+                setCurrencyObject({
+                    USDEUR:result.quotes.USDEUR,
+                    USDUAH:result.quotes.USDUAH,
+                    EURUAH:result.quotes.USDUAH / result.quotes.USDEUR,
+                })
+            });
+    },[currencyObject!==null])
 
+    return(
+        <div>
+            <Header currency={currencyObject}/>
+            <Converter currency={currencyObject}/>
+        </div>
+    )
+
+}
 export default App;
