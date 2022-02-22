@@ -29,9 +29,6 @@ export const Converter = ({currency})=>{
     return(
         <div>
             <div>
-                <div>
-                    {a}
-                </div>
                 <label>
                     <input
                         onChange={handleChange}
